@@ -33,7 +33,7 @@ if (!Array.find_matches) Array.find_matches = function(a) {
 function VariantOptions(params) {
 
   var options = params['options'];
-  var allow_backorders = !params['track_inventory_levels'] ||  params['allow_backorders'];
+  // var allow_backorders = !params['track_inventory_levels'] ||  params['allow_backorders'];
   var allow_select_outofstock = params['allow_select_outofstock'];
   var default_instock = params['default_instock'];
 
@@ -74,7 +74,8 @@ function VariantOptions(params) {
 
   function enable(btns) {
     bt = btns.not('.unavailable').removeClass('locked').unbind('click')
-    if (!allow_select_outofstock && !allow_backorders)
+    // if (!allow_select_outofstock && !allow_backorders)
+    if (!allow_select_outofstock)
       bt = bt.filter('.in-stock')
     return bt.click(handle_click).filter('.auto-click').removeClass('auto-click').click();
   }
@@ -107,9 +108,10 @@ function VariantOptions(params) {
         disable($(element).addClass('unavailable locked').unbind('click'));
       } else if (keys.length == 1) {
         _var = variants[keys[0]];
-        $(element).addClass((allow_backorders || _var.count) ? selection.length == 1 ? 'in-stock auto-click' : 'in-stock' : 'out-of-stock');
-      } else if (allow_backorders) {
-        $(element).addClass('in-stock');
+        // $(element).addClass((allow_backorders || _var.count) ? selection.length == 1 ? 'in-stock auto-click' : 'in-stock' : 'out-of-stock');
+        $(element).addClass((_var.count) ? selection.length == 1 ? 'in-stock auto-click' : 'in-stock' : 'out-of-stock');
+      //} else if (allow_backorders) {
+        // $(element).addClass('in-stock');
       } else {
         $.each(variants, function(key, value) { count += value.count });
         $(element).addClass(count ? 'in-stock' : 'out-of-stock');
@@ -176,7 +178,8 @@ function VariantOptions(params) {
     if (variant) {
       $('#variant_id, form[data-form-type="variant"] input[name$="[variant_id]"]').val(variant.id);
       $('#product-price .price').removeClass('unselected').text(variant.price);
-      if (variant.count > 0 || allow_backorders)
+      //if (variant.count > 0 || allow_backorders)
+      if (variant.count > 0)
         $('#cart-form button[type=submit]').attr('disabled', false).fadeTo(100, 1);
       $('form[data-form-type="variant"] button[type=submit]').attr('disabled', false).fadeTo(100, 1);
       try {

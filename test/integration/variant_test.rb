@@ -19,7 +19,7 @@ class ProductTest < ActionDispatch::IntegrationTest
 
     setup do
       Spree::Config[:track_inventory_levels] = true
-      Spree::Config[:allow_backorders] = false
+      # Spree::Config[:allow_backorders] = false
       @product = Factory(:product)
       @size = Factory(:option_type)
       @color = Factory(:option_type, :name => "Color")
@@ -128,7 +128,7 @@ class ProductTest < ActionDispatch::IntegrationTest
     setup do
       reset_spree_preferences do |config|
         config.track_inventory_levels = false
-        config.allow_backorders = false
+        # config.allow_backorders = false
       end
       @product = Factory(:product)
       @size = Factory(:option_type)
